@@ -8,6 +8,12 @@
 
 #import "ViewController.h"
 
+// 宏的操作原理，每输入一个字母就会直接把宏右边的拷贝，并且会自动补齐前面的内容。
+// 定义KVO键值宏，在宏中，＃标示会把后面的参数变成C语言字符串：以下把key变成C语言字符串
+// 逗号表达式，只取最右边的值
+// 如果把c语言字符串转OC字符串需要使用@符号来包装
+#define keyPath(obj, key) @(((void)obj.key, #key))
+
 @interface ViewController ()
 
 @property (nonatomic, weak) UIView *leftView;
@@ -101,7 +107,7 @@
  */
 - (void)setupObserverAction {
     // 给主视图添加一个frame的控制器监听
-    [self.mainView addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
+    [self.mainView addObserver:self forKeyPath:keyPath(self.mainView, frame) options:NSKeyValueObservingOptionNew context:nil];
 }
 
 /**
